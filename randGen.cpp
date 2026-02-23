@@ -6,7 +6,7 @@
 #include <string>
 
 int main() {
-    int N = 100000; //ten million Total number of unique numbers to generate
+    int N = 10; //ten million Total number of unique numbers to generate
     std::set<double> numbers;
 
     // Initialize a random number generator
