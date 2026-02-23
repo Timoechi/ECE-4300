@@ -120,73 +120,95 @@ void writeTimes(string filename, const vector<double> times, const vector<int> n
  * @return double 
  */
 double average(const vector<double> a){
-
+    double sum = 0;
+    for (int i = 0; i < a.size(); i++) {
+        sum += a[i];
+    }
+    return sum / a.size();
 }
 
-int main(){
+int main() {
     // test elements to search for
     vector<int> elem_to_find;
     vecGen("test_elem.csv", elem_to_find);
     // size (n) of all tests 
     vector<int> file_sizes;
     vecGen("sizes.csv", file_sizes);
-    
+
     //n list of numbers
-    vector<int>v; 
+    vector<int>v;
 
     //results of times
     vector<double> times;
 
     //results of avg per workload size
     vector<double> avg;
-    
-    // create a for loop to iterate through the file sizes
-        for(int i = 0; i < file_sizes.size(); i++) {
-        // get the name/size of the file and assign it to string called filename
-            string filename = to_string(file_sizes[i]) + "_numbers.csv";
-        //call vecGen on filename and v
-            vecGen();
-        // print filename (this will be good for debugging)
-       
-        // call times.clear() // this ensures that we reset times everytime we read a new file 
-            times.clear();
-        // create another for loop to iterate through all the elements from elem_to_find. 
-        // the code here should be nearly identical to the code from the previous lab 
-    
-            
-            
-      
-            // append the elapsed_time_in_sec to the vector,times (hint: push_back())
-            // This code shuold be within the for loop that iterates 
-            // through all the elements from elem_to_find
-            
-            
-      
-        // call average on the vector, times, and save it as a double. This code should be 
-        // outside the for loop that iterates through all the elements from elem_to_find
-        // but within the for loop that iterates through the file sizes
-        
 
-        // append the double to avg. (hint: push_back())
-        // This code should be outside the for loop that iterates through
-        // all the elements from elem_to_find
-        // but within the for loop that iterates through the file sizes
-        
+    // create a for loop to iterate through the file sizes
+    for (int i = 0; i < file_sizes.size(); i++) {
+        // get the name/size of the file and assign it to string called filename
+        string filename = to_string(file_sizes[i]) + ".csv";
+        //call vecGen on filename and v
+        vecGen(filename, v);
+        // print filename (this will be good for debugging)
+        cout << filename << endl;
+        // call times.clear() // this ensures that we reset times everytime we read a new file 
+        times.clear();
+        // create another for loop to iterate through all the elements from elem_to_find. 
+        // the code here should be nearly identical to the code from the previous lab
+        // append the elapsed_time_in_sec to the vector,times (hint: push_back())
+        // This code shuold be within the for loop that iterates 
+        // through all the elements from elem_to_find
+
+
+        for (int i = 0; i <= elem_to_find.size(); i++) {
+            auto start = chrono::high_resolution_clock::now();
+            int index_if_found = iterativeSearch(v, elem_to_find[i]);
+            auto end = chrono::high_resolution_clock::now();
+            auto duration = chrono::duration_cast<std::chrono::microseconds>(end - start);
+            cout << index_if_found << ": " << duration.count() << "microseconds" << endl;
+            times.push_back(duration.count());
+        }
+
+    // call average on the vector, times, and save it as a double. This code should be 
+    // outside the for loop that iterates through all the elements from elem_to_find
+    // but within the for loop that iterates through the file sizes
+        double average_time = average(times);
+
+    // append the double to avg. (hint: push_back())
+    // This code should be outside the for loop that iterates through
+    // all the elements from elem_to_find
+    // but within the for loop that iterates through the file sizes
+        avg.push_back(average_time);
     }
 
     //outside both for loops call writeTimes with the appropriate parameters
     // the first parameter should be "iterativeSearch_times.csv"
     // read the function brief to complete the rest of the parameters
-    
+    writeTimes("iterativeSearch_times.csv", avg, file_sizes);
 
     // call avg.clear() to reset avg, so we can use it for binarySearch
-
+    avg.clear();
 
     // repeat the nested for loops used for iterativeSearch, but call binarySearch instead
+    for (int i = 0; i < file_sizes.size(); i++) {
+        string filename = to_string(file_sizes[i]) + ".csv";
+        vecGen(filename, v);
+        cout << filename << endl;
+        times.clear();
+        for (int i = 0; i <= elem_to_find.size(); i++) {
+            auto start = chrono::high_resolution_clock::now();
+            int index_if_found = binarySearch(v, 0, v.size()-1, elem_to_find[i]);
+            auto end = chrono::high_resolution_clock::now();
+            auto duration = chrono::duration_cast<std::chrono::microseconds>(end - start);
+            cout << index_if_found << ": " << duration.count() << "microseconds" << endl;
+            times.push_back(duration.count());
+        }
 
-
-    //outside both for loops call writeTimes with the appropriate parameters
-    // the first parameter should be "binarySearch_times.csv"
-    // read the function brief to complete the rest of the parameters
-
+        double average_time = average(times);
+        avg.push_back(average_time);
+    }
+    writeTimes("binarySearch_times.csv", avg, file_sizes);
+    avg.clear();
+    
 }
