@@ -20,7 +20,7 @@ int iterativeSearch(vector<int>v, int elem){
     // inside the for loop, use an if statement to check whether the element at i (e.g. v[i]) equals elem
     // inside the if statement return i
     for (int i = 0; i <= v.size(); i++) {
-        if (v[i] = elem) {
+        if (v[i] == elem) {
             return i;
         } 
     }
@@ -94,7 +94,7 @@ void vecGen(string filename, vector<int> & v){
 /**
  * @brief writes to file the time it took to search with respect to the
  *  size of the vector, n
- *  Number of Elements (n)	    Time (sec) 
+ *  Number of Elements (n)	    Time (nanosec) 
     XXXX	                    X.XXXXX
     XXXX	                    X.XXXXX
  * @param filename (string) : filename (e.g. output_10000_numbers.csv)
@@ -104,10 +104,10 @@ void vecGen(string filename, vector<int> & v){
 void writeTimes(string filename, const vector<double> times, const vector<int> n){
     ofstream myFile(filename);
 
-    myFile << "Number of Elements (n)\t Time (sec) " << endl;
+    myFile << "Number of Elements (n), Time (nanosec) " << endl;
     for(int i = 0; i < times.size(); i++){
 
-        myFile << n[i] << "\t" << times[i] << "\n";
+        myFile << n[i] << "," << times[i] << "\n";
     }
     myFile.close();
     cout << "Wrote to " << filename << endl;
@@ -161,12 +161,12 @@ int main() {
         // through all the elements from elem_to_find
 
 
-        for (int i = 0; i <= elem_to_find.size(); i++) {
+        for (int i = 0; i < elem_to_find.size(); i++) {
             auto start = chrono::high_resolution_clock::now();
             int index_if_found = iterativeSearch(v, elem_to_find[i]);
             auto end = chrono::high_resolution_clock::now();
-            auto duration = chrono::duration_cast<std::chrono::microseconds>(end - start);
-            cout << index_if_found << ": " << duration.count() << "microseconds" << endl;
+            auto duration = chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+            cout << index_if_found << ": " << duration.count() << "ns" << endl;
             times.push_back(duration.count());
         }
 
@@ -196,12 +196,12 @@ int main() {
         vecGen(filename, v);
         cout << filename << endl;
         times.clear();
-        for (int i = 0; i <= elem_to_find.size(); i++) {
+        for (int i = 0; i < elem_to_find.size(); i++) {
             auto start = chrono::high_resolution_clock::now();
             int index_if_found = binarySearch(v, 0, v.size()-1, elem_to_find[i]);
             auto end = chrono::high_resolution_clock::now();
-            auto duration = chrono::duration_cast<std::chrono::microseconds>(end - start);
-            cout << index_if_found << ": " << duration.count() << "microseconds" << endl;
+            auto duration = chrono::duration_cast<std::chrono::nanoseconds>(end - start);
+            cout << index_if_found << ": " << duration.count() << "ns" << endl;
             times.push_back(duration.count());
         }
 
