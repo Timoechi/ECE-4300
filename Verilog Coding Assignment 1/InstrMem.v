@@ -5,7 +5,7 @@ module instrMem(
     output reg [31:0] data
 );
 
-reg [31:0] memory [0:1023];
+reg [31:0] memory [0:(2^32-1)];
 
 initial begin
     memory[0] = 32'hA00000AA;
