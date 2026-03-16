@@ -1,19 +1,18 @@
 `timescale 1ns / 1ps
-module PC(
-    input clk, enable, rst,
-    input [31:0] pcin,
-    output reg [31:0] pcout
-    );
-initial begin
-    pcout = 32'b0;
-end
 
+module pc(
+    input wire clk,
+    input wire rst,
+    input wire [31:0] pc_in,
+    output reg [31:0] pc_out
+);
 
-always @(pcin or posedge clk) begin
-    if (rst == 1'b1)
-        pcout <= 32'b0;    
-    if (enable == 1'b1)
-        pcout <= pcin;
+always @(posedge clk or posedge rst)
+begin
+    if (rst)
+        pc_out <= 32'b0;
+    else
+        pc_out <= pc_in;
 end
 
 endmodule
