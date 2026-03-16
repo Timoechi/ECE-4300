@@ -1,4 +1,4 @@
-Jaiden Phung  Kevin Perez  Tim Chow
+Jaiden Phung, Kevin Perez, Tim Chow
 
 
 ## Timing Diagram
