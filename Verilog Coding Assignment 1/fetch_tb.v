@@ -29,16 +29,16 @@ initial begin
 
     rst = 1;
     ex_mem_pc_src = 0;
-    ex_mem_npc = 32'h00000040;
+    ex_mem_npc = 32'h00000000;
 
     #10 rst = 0;        // release reset
 
     // normal sequential execution
-    #100;
+    #90;
 
     // simulate branch
     ex_mem_pc_src = 1;
-    #20;
+    #10;
 
     ex_mem_pc_src = 0;
     #100;
